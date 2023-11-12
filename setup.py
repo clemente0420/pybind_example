@@ -1,6 +1,7 @@
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
 import sys
+import os
 
 __version__ = '0.0.1'
 
@@ -25,6 +26,10 @@ class BuildExt(build_ext):
     def build_extensions(self):
         for ext in self.extensions:
             ext.extra_compile_args = ['-std=c++11']
+            # 如果需要DEBUG版本
+            # Check for the environment variable before adding the '-g' flag
+            if os.getenv('pybind_example_debug'):
+                ext.extra_compile_args = ['-g']
         super().build_extensions()
 
 setup(
